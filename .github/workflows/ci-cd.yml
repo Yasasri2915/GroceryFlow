@@ -21,10 +21,16 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Install Parent POM
+        run: |
+          if [ -d "groceryflow-parent" ]; then
+            mvn -N install -f groceryflow-parent/pom.xml || true
+          fi
+
       - name: Run Payment Service Unit Tests
         run: |
           cd payment-service
-          mvn clean test
+          mvn test
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
