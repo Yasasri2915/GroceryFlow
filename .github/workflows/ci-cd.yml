@@ -23,16 +23,15 @@ jobs:
 
       - name: Install Parent POM
         run: |
-          mvn install -N -f groceryflow-parent/pom.xml
+          mvn clean install -N -f groceryflow-parent/pom.xml
 
       - name: Run Payment Service Unit Tests
         run: |
-          mvn clean test -f payment-service/pom.xml
+          mvn test -f payment-service/pom.xml
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Build Payment Service Docker Image
         run: |
-          cd payment-service
-          docker build -t groceryflow-payment:${{ github.sha }} .
+          docker build -t groceryflow-payment:${{ github.sha }} ./payment-service
