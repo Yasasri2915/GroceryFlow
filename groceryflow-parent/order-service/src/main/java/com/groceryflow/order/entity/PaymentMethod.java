@@ -1,0 +1,7 @@
+package com.groceryflow.order.entity;
+
+public enum PaymentMethod {
+    CREDIT_CARD,
+    UPI,
+    CASH_ON_DELIVERY
+}
