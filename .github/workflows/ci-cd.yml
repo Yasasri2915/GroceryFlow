@@ -1,0 +1,35 @@
+﻿name: CI-CD Pipeline
+
+on:
+  push:
+    branches: [ "main", "develop", "feature/**" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run Payment Service Unit Tests
+        run: |
+          cd payment-service
+          mvn clean test
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Payment Service Docker Image
+        run: |
+          cd payment-service
+          docker build -t groceryflow-payment:${{ github.sha }} .
